@@ -1,34 +1,43 @@
-// 기능구현 목록
-// 글 작성하기
-// 작성한 글 리스트에 저장하기
-// 작성한 글 삭제 , 수정
-// 한 일과 안 한 일 구분하기(완료 체크)
-// 리스트 로컬스토리지에 저장하기
-
-import { useRef, useState } from "react";
-import "./App.css";
+import { useEffect, useRef, useState } from "react";
+import { RiDeleteBack2Line } from "react-icons/ri";
+import "./App.scss";
+import { BiSolidEditAlt } from "react-icons/bi";
+import { FaCheck } from "react-icons/fa";
+import { ImCancelCircle } from "react-icons/im";
+import { GoTrash } from "react-icons/go";
+import { FcComments, FcDownLeft, FcSettings } from "react-icons/fc";
 
 function App() {
-  const now = new Date();
-  const [todo, setTodo] = useState([]);
+  const [todo, setTodo] = useState(() => {
+    const browserValue = localStorage.getItem("content");
+    return browserValue ? JSON.parse(browserValue) : [];
+  });
+  useEffect(() => {
+    localStorage.setItem("content", JSON.stringify(todo));
+  }, [todo]);
   return (
     <>
-      <TodoInput setTodo={setTodo} now={now} />
-      <TodoList todo={todo} setTodo={setTodo} />
+      <div className="container">
+        <MusicPlay />
+        <TodoInput setTodo={setTodo} />
+        <TodoList todo={todo} setTodo={setTodo} />
+      </div>
     </>
   );
 }
 
-const TodoInput = ({ setTodo, now }) => {
+const TodoInput = ({ setTodo }) => {
   const inputRef = useRef(null);
   const addTodo = () => {
     const newTodo = {
-      id: Number(now),
+      id: Date.now(),
       content: inputRef.current.value,
+      checked: false,
     };
     setTodo((prev) => [...prev, newTodo]);
     inputRef.current.value = "";
   };
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       addTodo();
@@ -37,14 +46,26 @@ const TodoInput = ({ setTodo, now }) => {
 
   return (
     <>
-      <div>
+      <div className="inputContainer">
         <input
+          className="input"
           type="text"
           ref={inputRef}
           placeholder="할 일을 입력해주세요."
           onKeyDown={handleKeyPress}
         />
-        <button onClick={addTodo}>추가</button>
+        <button
+          className="w-btn w-btn-skin"
+          onClick={() => {
+            if (inputRef.current.value === "") {
+              alert("내용을 입력해주세요!");
+            } else {
+              addTodo();
+            }
+          }}
+        >
+          <FcDownLeft />
+        </button>
       </div>
     </>
   );
@@ -63,48 +84,115 @@ const TodoList = ({ todo, setTodo }) => {
 
 const Todo = ({ todo, setTodo }) => {
   const [isEdit, setIsEdit] = useState(false);
+  const [editContent, setEditContent] = useState(todo.content);
+  const toggleCheckbox = () => {
+    setTodo((prev) =>
+      prev.map((el) =>
+        el.id === todo.id ? { ...el, checked: !el.checked } : el
+      )
+    );
+  };
 
+  const update = () => {
+    setTodo((prev) =>
+      prev.map((el) =>
+        el.id === todo.id ? { ...el, content: editContent } : el
+      )
+    );
+    setIsEdit(false);
+  };
   if (isEdit === false) {
     return (
       <li>
-        {todo.content}
+        <ToggleButton todo={todo} toggleCheckbox={toggleCheckbox} />
+        <span
+          style={{
+            color: todo.checked ? "lightgray" : "black",
+          }}
+        >
+          {todo.content}
+        </span>
         <button
+          className="listButton"
           onClick={() => {
             setIsEdit(true);
           }}
         >
-          수정
+          <FcSettings />
         </button>
         <button
           onClick={() => {
             setTodo((prev) => prev.filter((el) => el.id !== todo.id));
           }}
         >
-          삭제
+          <GoTrash />
         </button>
       </li>
     );
   } else {
     return (
       <li>
-        <input type="text" value={todo.content} />
-        <button
-          onClick={() => {
-            setIsEdit(false);
-          }}
-        >
-          수정 완료
+        <input
+          type="text"
+          value={editContent}
+          onChange={(e) => setEditContent(e.target.value)}
+        />
+        <button className="listButton editing" onClick={update}>
+          <FaCheck />
         </button>
         <button
+          className="editing"
           onClick={() => {
             setIsEdit(false);
           }}
         >
-          수정취소
+          <RiDeleteBack2Line />
         </button>
       </li>
     );
   }
+};
+
+const MusicPlay = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(new Audio("/Married Life.mp3"));
+  const playMusic = () => {
+    const audio = audioRef.current;
+
+    if (audio.paused) {
+      audio.play();
+      setIsPlaying(true);
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+      audio.currentTime = 0;
+    }
+  };
+  return (
+    <div>
+      <h1 className={isPlaying && "title"} fifth onClick={playMusic}>
+        Todo List
+      </h1>
+    </div>
+  );
+};
+
+const ToggleButton = ({ todo, toggleCheckbox }) => {
+  return (
+    <>
+      <div className="toggle-wrapper">
+        <input
+          className="toggle-checkbox"
+          type="checkbox"
+          checked={todo.checked}
+          onChange={toggleCheckbox}
+        />
+        <div className="toggle-container">
+          <div className="toggle-button"></div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default App;
