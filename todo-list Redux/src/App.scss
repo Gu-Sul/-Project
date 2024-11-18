@@ -1,0 +1,158 @@
+#root {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  font-family: "Nanum Myeongjo", serif;
+  background-color: none;
+}
+h1 {
+  font-weight: 900;
+  font-size: 60px;
+}
+
+.input {
+  width: 70%;
+  height: 70px;
+  font-size: 25px;
+  border-radius: 15px 0 0 15px;
+  border: 2px solid lightgrey;
+}
+ul {
+  margin-top: 100px;
+}
+li {
+  list-style-type: none;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  font-weight: 600;
+  border-radius: 15px;
+  padding: 0 20px;
+  margin-top: 30px;
+  box-shadow: inset 0 -0.0625em 0.0625em 0.125em rgb(0 0 0 / 0.1),
+    inset 0 -0.125em 0.0625em rgb(0 0 0 / 0.2),
+    inset 0 0.1875em 0.0625em rgb(255 255 255 / 0.3),
+    0 0.125em 0.125em rgb(0 0 0 / 0.5);
+  button {
+    width: 80px;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 0 10px 10px 0;
+    color: red;
+    border: none;
+    font-weight: 900;
+    box-shadow: inset 0 -0.0625em 0.0625em 0.125em rgb(0 0 0 / 0.1),
+      inset 0 -0.125em 0.0625em rgb(0 0 0 / 0.2),
+      inset 0 0.1875em 0.0625em rgb(255 255 255 / 0.3),
+      0 0.125em 0.125em rgb(0 0 0 / 0.5);
+  }
+  input {
+    display: flex;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    width: 70%;
+    height: 80%;
+    font-size: 2rem;
+  }
+}
+li:hover {
+  background-color: rgb(242, 242, 243);
+}
+.editing {
+  background-color: lightgray;
+  color: rgb(62, 62, 186) !important;
+}
+.listButton {
+  margin-left: auto;
+  border-radius: 10px 0 0 10px;
+  color: black;
+  font-weight: bolder;
+  cursor: pointer;
+}
+ul {
+  padding: 0;
+}
+.toggle-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 0.5em;
+  padding: 0.125em;
+  background-image: linear-gradient(to bottom, #d0c4b8, #f5ece5);
+  box-shadow: 0 1px 1px rgb(255 255 255 / 0.6);
+  margin-right: 25px;
+}
+
+.toggle-checkbox {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  z-index: 1;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: 0.375em;
+  width: 2em;
+  height: 0.7em;
+  background-color: #e1dacd;
+  box-shadow: inset 0 0 0.0625em 0.125em rgb(255 255 255 / 0.2),
+    inset 0 0.0625em 0.125em rgb(0 0 0 / 0.4);
+  transition: background-color 0.4s linear;
+
+  .toggle-checkbox:checked + & {
+    background-color: #55c74a;
+  }
+}
+
+.toggle-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0.0625em;
+  border-radius: 0.3125em;
+  width: 1.075em;
+  height: 1.075em;
+  background-color: #e4e4e2;
+  box-shadow: inset 0 -0.0625em 0.0625em 0.125em rgb(0 0 0 / 0.1),
+    inset 0 -0.125em 0.0625em rgb(0 0 0 / 0.2),
+    inset 0 0.1875em 0.0625em rgb(255 255 255 / 0.3),
+    0 0.125em 0.125em rgb(0 0 0 / 0.5);
+  transition: left 0.4s /*cubic-bezier(.65, 1.35, .5, 1)*/;
+
+  .toggle-checkbox:checked + .toggle-container > & {
+    left: 1em;
+  }
+}
+
+*::selection {
+  background: rgba(226, 145, 230, 0.2);
+}
+
+.w-btn {
+  border: none;
+  border-width: 1px 1px 1px 0px;
+  width: 100px;
+  height: 76px;
+  border-radius: 0 15px 15px 0;
+  font-size: 23px;
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.title {
+  text-transform: uppercase;
+  letter-spacing: 10px;
+  fill: #333;
+}
